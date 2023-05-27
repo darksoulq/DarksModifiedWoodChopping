@@ -14,8 +14,8 @@ import org.bukkit.Material;
 
 public class DarksModifiedWoodChopping extends JavaPlugin implements Listener {
 
-    private ShapedRecipe flintAxeRecipe;
-    private ShapedRecipe plantFiberRecipe;
+    private ShapelessRecipe flintAxeRecipe;
+    private ShapelessRecipe plantFiberRecipe;
 
     @Override
     public void onEnable() {
@@ -38,26 +38,21 @@ public class DarksModifiedWoodChopping extends JavaPlugin implements Listener {
             damageable.setDamage(flintAxe.getType().getMaxDurability() / 2);
             flintAxe.setItemMeta(itemMeta);
         }
-        flintAxeRecipe = new ShapedRecipe(flintAxe);
-
-        // Set the shape of the recipe
-        flintAxeRecipe.shape("TP ", "S  ", "  ");
+        flintAxeRecipe = new ShapelessRecipe(flintAxe);
 
         // Define the ingredients for the recipe
-        flintAxeRecipe.setIngredient('P', Material.FLINT);
-        flintAxeRecipe.setIngredient('T', plant_fiber);
-        flintAxeRecipe.setIngredient('S', Material.STICK);
+        flintAxeRecipe.addIngredient(Material.FLINT);
+        flintAxeRecipe.addIngredient(plant_fiber);
+        flintAxeRecipe.addIngredient(Material.STICK);
 
         // Register the recipe
         getServer().addRecipe(flintAxeRecipe);
 
-        plantFiberRecipe = new ShapedRecipe(plant_fiber);
+        plantFiberRecipe = new ShapelessRecipe(plant_fiber);
 
-        // Set the shape of the recipe
-        plantFiberRecipe.shape("RR ", "R  ", "  ");
 
         // Define the ingredients for the recipe
-        plantFiberRecipe.setIngredient('R', Material.WHEAT_SEEDS);
+        plantFiberRecipe.addIngredient( Material.WHEAT_SEEDS);
         // Register the recipe
         getServer().addRecipe(plantFiberRecipe);
     }
