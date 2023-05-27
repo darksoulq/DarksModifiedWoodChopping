@@ -4,6 +4,8 @@ import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRecipeDiscoverEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -11,6 +13,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Material;
 
 public class DarksModifiedWoodChopping extends JavaPlugin implements Listener {
+
+    private ShapedRecipe flintAxeRecipe;
+    private ShapedRecipe plantFiberRecipe;
 
     @Override
     public void onEnable() {
@@ -33,10 +38,10 @@ public class DarksModifiedWoodChopping extends JavaPlugin implements Listener {
             damageable.setDamage(flintAxe.getType().getMaxDurability() / 2);
             flintAxe.setItemMeta(itemMeta);
         }
-        ShapedRecipe flintAxeRecipe = new ShapedRecipe(flintAxe);
+        flintAxeRecipe = new ShapedRecipe(flintAxe);
 
         // Set the shape of the recipe
-        flintAxeRecipe.shape("TP", "S ", " ");
+        flintAxeRecipe.shape("TP ", "S  ", "  ");
 
         // Define the ingredients for the recipe
         flintAxeRecipe.setIngredient('P', Material.FLINT);
@@ -46,10 +51,10 @@ public class DarksModifiedWoodChopping extends JavaPlugin implements Listener {
         // Register the recipe
         getServer().addRecipe(flintAxeRecipe);
 
-        ShapedRecipe plantFiberRecipe = new ShapedRecipe(plant_fiber);
+        plantFiberRecipe = new ShapedRecipe(plant_fiber);
 
         // Set the shape of the recipe
-        plantFiberRecipe.shape("RR", "R ", " ");
+        plantFiberRecipe.shape("RR ", "R  ", "  ");
 
         // Define the ingredients for the recipe
         plantFiberRecipe.setIngredient('R', Material.WHEAT_SEEDS);
@@ -87,5 +92,22 @@ public class DarksModifiedWoodChopping extends JavaPlugin implements Listener {
                 || material.name().contains("GRANITE") || material.name().contains("ANDESITE")
                 || material.name().contains("DIORITE") || material.name().contains("BRICK")
                 || material.name().equals("QUARTZ_BLOCK") || material.name().equals("QUARTZ_PILLAR");
+    }
+
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        // Give the custom recipes to the joining player
+        event.getPlayer().discoverRecipe(flintAxeRecipe.getKey());
+        event.getPlayer().discoverRecipe(plantFiberRecipe.getKey());
+    }
+
+    @EventHandler
+    public void onPlayerRecipeDiscover(PlayerRecipeDiscoverEvent event) {
+        // Prevent the player from discovering vanilla recipes
+        if (!event.getRecipe().getKey().equals(flintAxeRecipe.getKey())) {
+            event.setCancelled(true);
+        if (!event.getRecipe().getKey().equals(plantFiberRecipe.getKey())) {
+            event.setCancelled(true);
+            }
+        }
     }
 }
