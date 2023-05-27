@@ -1,0 +1,4 @@
+name: DarksModifiedWoodChopping
+version: '${project.version}'
+main: me.darksoul.darksmodifiedwoodchopping.DarksModifiedWoodChopping
+api-version: 1.19
